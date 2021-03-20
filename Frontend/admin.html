@@ -1,0 +1,455 @@
+<html>
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>Admin Page</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+
+        #Test {
+            display: block;
+            margin: 0 auto;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.3em 1em;
+            text-decoration: none;
+            color: #0e1c36;
+            border: solid 2px #0e1c36;
+            border-radius: 3px;
+            transition: .4s;
+            background: white;
+        }
+
+        button:hover {
+            background: #0e1c36;
+            color: white;
+        }
+    </style>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+
+<body style="text-align: center;">
+    <script>
+        let maxQuestionLength;
+
+        let oldQ;
+        let oldO1;
+        let oldO2;
+        let oldO3;
+        let oldO4;
+        let oldC;
+        $(document).ready(function () {
+
+
+
+
+
+            $.ajax({ //create an ajax request
+                type: "GET",
+                url: "/individual/readFromAdmin",
+                dataType: "json", //expect html to be returned                
+                success: function (data) {
+
+
+                    maxQuestionLength = data[data.length - 1].ID;
+                    console.log(maxQuestionLength + " maxQuestionLength");
+                    // myFunctionAnswers(data)
+                    myFunction(data);
+                },
+                error: function (request, status, error) {
+                    // alert(request.responseText);
+                    console.log(error);
+                }
+
+            });
+
+
+            function myFunctionAnswers(data) {
+                let correctAnswerQueue = [];
+                for (let i = 0; i < data.length; i++) {
+
+                    correctAnswerQueue.push(data[i].correct);
+                    // correctAnswerQueue.push(data1[i].questionID);
+                }
+                return correctAnswerQueue;
+            }
+
+
+            function myFunction(data1) {
+                let length = data1.length;
+                // console.log(length);
+                let answerQ = myFunctionAnswers(data1);
+
+                for (let i = 0; i < length; i++) {
+
+                    let container = document.getElementById("Test");
+                    let questionIDPlaceholder = document.createElement("div");
+                    questionIDPlaceholder.innerHTML = "Question ID: ";
+                    container.appendChild(questionIDPlaceholder);
+
+                    let questionID = document.createElement("div");
+                    questionID.innerHTML = data1[i].ID;
+
+                    container.appendChild(questionID);
+
+                    let questionPlaceholder = document.createElement("div");
+                    questionPlaceholder.innerHTML = "Question: ";
+                    container.appendChild(questionPlaceholder);
+                    let questionContent = document.createElement("div");
+                    questionContent.innerHTML = data1[i].Question;
+                    // var container = document.getElementById("Test");
+                    container.appendChild(questionContent);
+
+                    let option1Placeholder = document.createElement("div");
+                    option1Placeholder.innerHTML = "Option A: ";
+                    container.appendChild(option1Placeholder);
+
+                    let optionContent = document.createElement("div");
+                    optionContent.innerHTML = data1[i].Option1;
+                    let container_Option = document.getElementById("Test");
+                    container_Option.appendChild(optionContent);
+
+
+                    let option2Placeholder = document.createElement("div");
+                    option2Placeholder.innerHTML = "Option B: ";
+                    container.appendChild(option2Placeholder);
+
+                    let optionContent2 = document.createElement("div");
+                    optionContent2.innerHTML = data1[i].Option2;
+                    // let container_Option = document.getElementById("Test");
+                    container_Option.appendChild(optionContent2);
+
+
+                    
+
+                    
+                    if(data1[i].Option3.localeCompare("") == 0){
+                        
+                    } else {
+                        let option3Placeholder = document.createElement("div");
+                    option3Placeholder.innerHTML = "Option C: ";
+                    container.appendChild(option3Placeholder);
+                        let optionContent3 = document.createElement("div");
+                        optionContent3.innerHTML = data1[i].Option3;
+                        // let container_Option = document.getElementById("Test");
+                        container_Option.appendChild(optionContent3);
+                    }
+                    
+                    if(data1[i].Option4.localeCompare("") == 0){
+                        
+                    } else {
+                        let option4Placeholder = document.createElement("div");
+                    option4Placeholder.innerHTML = "Option D: ";
+                    container.appendChild(option4Placeholder);
+                    let optionContent4 = document.createElement("div");
+                    optionContent4.innerHTML = data1[i].Option4;
+                    // let container_Option = document.getElementById("Test");
+                    container_Option.appendChild(optionContent4);
+                    }
+                    
+
+                    
+
+                    let correctPlaceholder = document.createElement("div");
+                    correctPlaceholder.innerHTML = "Correct Option (ABCD): ";
+                    container.appendChild(correctPlaceholder);
+
+                    let answer = document.createElement("div");
+                    answer.innerHTML = data1[i].Correct;
+                    // var container_Option = document.getElementById("Test");
+                    container_Option.appendChild(answer);
+
+                    // var deleteBtn = document.createElement("button");
+                    // deleteBtn.innerHTML = "Delete";
+                    let modifyBtn = document.createElement("button");
+                    modifyBtn.innerHTML = "Modify";
+                    // container.appendChild(deleteBtn);
+                    container.appendChild(modifyBtn);
+                    modifyBtn.onclick = function () {
+                        console.log("questionContent.innerHTML");
+                        console.log(questionContent.innerHTML);
+                        let notification = document.createElement("div");
+                        notification.innerHTML = "Click Update to update this question!";
+                        container.appendChild(notification);
+
+                        // oldQ = newQ;
+                        // oldO1 = newO1;
+                        // oldO2 = newO2;
+                        // oldO3 = newO3;
+                        // oldO4 = newO4;
+                        // oldC = newC;
+
+
+                        // deleteBtn.style.display = 'none';
+                        modifyBtn.style.display = 'none';
+                        // var updateBtn = document.createElement("button");
+                        // updateBtn.innerHTML = "Update";
+                        // updateBtn.id = data1[i].ID;
+                        // container.appendChild(updateBtn);
+                        alert("Look at the bottom to update the question!");
+                        let one = document.getElementById("updateClassQ");
+                        one.value = data1[i].Question;
+
+                        let two = document.getElementById("updateClass1");
+                        two.value = data1[i].Option1;
+
+                        let three = document.getElementById("updateClass2");
+                        three.value = data1[i].Option2;
+
+                        let four = document.getElementById("updateClass3");
+                        four.value = data1[i].Option3;
+
+                        let five = document.getElementById("updateClass4");
+                        five.value = data1[i].Option4;
+
+                        let six = document.getElementById("updateClassC");
+                        six.value = data1[i].Correct;
+
+                        let eventUpdate = document.getElementById("update2");
+                        eventUpdate.addEventListener("click", function () {
+                            let output2 = [];
+                            new_value_1 = document.getElementById("updateClassQ").value;
+                            new_value_2 = document.getElementById("updateClass1").value;
+                            new_value_3 = document.getElementById("updateClass2").value;
+                            new_value_4 = document.getElementById("updateClass3").value;
+                            new_value_5 = document.getElementById("updateClass4").value;
+                            new_value_6 = document.getElementById("updateClassC").value;
+                            output2.push(data1[i].ID);
+                            output2.push(new_value_1);
+                            output2.push(new_value_2);
+                            output2.push(new_value_3);
+                            output2.push(new_value_4);
+                            output2.push(new_value_5);
+                            output2.push(new_value_6);
+                            console.log("output:" + output2);
+
+
+                            let sth = {
+                                "obj": output2
+                            };
+                            $.ajax({ //create an ajax request
+                                type: "PUT",
+                                url: "/individual/update1",
+                                dataType: "json", //expect html to be returned  
+                                // cache: false,
+                                // processData: true,
+                                data: {
+                                    output2
+                                },
+                                success: function (data) {
+
+                                    console.log(data);
+                                    
+                                    alert(data);
+                                    window.location.reload();
+
+                                },
+                                error: function (request, status, error) {
+                                    // alert(request.responseText);
+                                    console.log(error);
+                                    window.location.reload();
+                                }
+
+                            });
+                        });
+                        // update(data1[i].ID);
+
+                    };
+
+
+
+
+
+
+
+                }
+                // document.getElementById("Test").innerHTML = data1[0].id;
+            }
+
+        });
+    </script>
+
+
+
+
+
+    <script type="text/javascript">
+        function submit() {
+
+            let output = [];
+            let counter = 0;
+
+            let elemQ = document.getElementById("inputClassQ");
+
+            let elemC = document.getElementById("inputClassC");
+            // alert(elemQ);
+
+
+            
+
+
+            let elem = document.getElementById("inputClass1");
+            let elem2 = document.getElementById("inputClass2");
+            let elem3 = document.getElementById("inputClass3");
+            let elem4 = document.getElementById("inputClass4");
+            if(elemQ.value.localeCompare("") == 0) {
+                alert("Input your question!");
+                location.reload();
+            } else if(elemC.value.localeCompare("") == 0){
+                alert("Input your correct answer!");
+                location.reload();
+            } else if(elem.value.localeCompare("") == 0 ||
+            elem2.value.localeCompare("") == 0){
+                alert("Input at least 2 options!");
+                location.reload();
+            } else if(elemC.value.localeCompare("A") != 0 ||
+            elemC.value.localeCompare("B") != 0 ||
+            elemC.value.localeCompare("C") != 0 ||
+            elemC.value.localeCompare("D") != 0){
+                alert("Please input in capital letters ABCD!");
+                location.reload();
+                
+            }
+            else {
+                output.push(maxQuestionLength + 1);
+            output.push(elemQ.value);
+            output.push(elem.value);
+            output.push(elem2.value);
+            output.push(elem3.value);
+            output.push(elem4.value);
+            output.push(elemC.value);
+            
+            
+            
+            $(document).ready(function () {
+
+
+
+                $.ajax({ //create an ajax request
+                    type: "POST",
+                    url: "/individual/writeFromAdmin",
+                    dataType: "json", //expect html to be returned  
+                    data: {
+                        "obj": output
+                    },
+                    success: function (data) {
+
+                        console.log(data);
+                        
+                        alert(data);
+                        window.location.reload();
+
+                    },
+                    error: function (request, status, error) {
+                        // alert(request.responseText);
+                        console.log(error);
+                        window.location.reload();
+                    }
+
+                });
+
+            });
+            }
+            
+            
+            
+
+            // console.log("elem.length" + elem.length);
+            
+
+            
+        }
+
+        // function update (data123) {
+
+
+
+        // }
+    </script>
+
+    <!-- <script>
+        function add() {
+            let qInput = document.createElement("input");
+            qInput.setAttribute("placeholder", "Put your question here");
+            qInput.setAttribute("name", "inputClassQ");
+            let option1 = document.createElement("input");
+            option1.setAttribute("placeholder", "Option A");
+            option1.setAttribute("name", "inputClass");
+            let option2 = document.createElement("input");
+            option2.setAttribute("placeholder", "Option B");
+            option2.setAttribute("name", "inputClass");
+            let option3 = document.createElement("input");
+            option3.setAttribute("placeholder", "Option C");
+            option3.setAttribute("name", "inputClass");
+            let option4 = document.createElement("input");
+            option4.setAttribute("placeholder", "Option D");
+            option4.setAttribute("name", "inputClass");
+            let correctOption = document.createElement("input");
+            correctOption.setAttribute("placeholder", "Correct option");
+            correctOption.setAttribute("name", "inputClassC");
+            let container = document.getElementById("inputField");
+            container.appendChild(qInput);
+            container.appendChild(option1);
+            container.appendChild(option2);
+            container.appendChild(option3);
+            container.appendChild(option4);
+            container.appendChild(correctOption);
+            console.log(maxOptionLength);
+            console.log(maxQuestionLength);
+
+
+        }
+    </script> -->
+    <h1>Welcome, admin!</h1>
+    <!-- <input id="testt"> -->
+    <!-- <button onclick="submit()">Submit</button> -->
+    <input placeholder="New question goes here..." id="inputClassQ">
+
+    <input placeholder="Option 1" id="inputClass1">
+    <input placeholder="Option 2" id="inputClass2">
+    <input placeholder="Option 3" id="inputClass3">
+    <input placeholder="Option 4" id="inputClass4">
+
+    <input placeholder="Correct Option" id="inputClassC">
+    <button onclick="submit()">Submit</button>
+    <div id="inputField"></div>
+    <!-- <button onclick="add()">Add a new question</button> -->
+
+    <br>
+
+    <div id="Test" style="width: 70%; height: auto;"></div>
+    <input placeholder="Question goes here..." id="updateClassQ">
+
+    <input placeholder="Option A" id="updateClass1">
+    <input placeholder="Option B" id="updateClass2">
+    <input placeholder="Option C" id="updateClass3">
+    <input placeholder="Option D" id="updateClass4">
+
+    <input placeholder="Correct Option" id="updateClassC">
+    <br>
+    <button id="update2">Update</button>
+    <br><br>
+
+
+
+    <button onclick="toHomepage()">Go Back to Index</button>
+
+
+    <script>
+        function toHomepage() {
+            window.location = "/individual";
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>

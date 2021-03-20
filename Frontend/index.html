@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Homepage</title>
+    <!-- <link rel="icon" href="./favicon-32x32.png"> -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+        body {
+            background-color: aquamarine;
+        }
+
+        button {
+            display: inline-block;
+            padding: 0.3em 1em;
+            text-decoration: none;
+            color: #0e1c36;
+            border: solid 2px #0e1c36;
+            border-radius: 3px;
+            transition: .4s;
+            background: white;
+        }
+
+        button:hover {
+            background: #0e1c36;
+            color: white;
+        }
+    </style>
+
+
+
+
+</head>
+
+<body>
+
+    <div style="text-align: center;">
+        <h1>Welcome!</h1>
+        <button id="student">Student</button>
+        <button id="admin">Admin</button>
+        <button id="leaderboard">Leaderboard</button>
+    </div>
+    <script>
+        document.getElementById("student").addEventListener("click", gotostudent);
+        document.getElementById("admin").addEventListener("click", gotoadmin);
+        document.getElementById("leaderboard").addEventListener("click", gotoscoreboard);
+
+        function gotostudent() {
+            window.location.href = "/individual/student";
+        }
+
+        function gotoadmin() {
+            window.location.href = "/individual/admin";
+        }
+
+        function gotoscoreboard() {
+            window.location.href = "/individual/leader";
+        }
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,190 @@
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <title>Student Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background-color: aquamarine;
+    }
+
+    #Test {
+      display: block;
+      margin: 0 auto;
+    }
+
+    button {
+      display: inline-block;
+      padding: 0.3em 1em;
+      text-decoration: none;
+      color: #0e1c36;
+      border: solid 2px #0e1c36;
+      border-radius: 3px;
+      transition: .4s;
+      background: white;
+    }
+
+    button:hover {
+      background: #0e1c36;
+      color: white;
+    }
+  </style>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+
+<body style="text-align: center;">
+  <script type="text/javascript">
+    let realAnswer = [];
+
+    $(document).ready(function () {
+
+
+
+      $.ajax({ //create an ajax request
+        type: "GET",
+        url: "/individual/readFromStudent",
+        dataType: "json", //expect html to be returned                
+        success: function (data) {
+
+          console.log(data);
+          myFunction(data);
+        },
+        error: function (request, status, error) {
+          alert(request.responseText);
+          console.log(error);
+        }
+
+      });
+
+    });
+
+    function myFunction(data1) {
+      for (let i = 0; i < data1.length; i++) {
+        let questionID = document.createElement("div");
+        questionID.innerHTML = "Question ID:" + data1[i].ID;
+        let container = document.getElementById("Test");
+        container.appendChild(questionID);
+
+
+        let questionContent = document.createElement("div");
+        questionContent.innerHTML = "Question: " + data1[i].Question;
+        // let container = document.getElementById("Test");
+        container.appendChild(questionContent);
+
+
+        let optionContent = document.createElement("div");
+        optionContent.innerHTML = "Option A: " + data1[i].Option1;
+        let container_Option = document.getElementById("Test");
+        container_Option.appendChild(optionContent);
+
+
+        let optionContent2 = document.createElement("div");
+        optionContent2.innerHTML = "Option B: " + data1[i].Option2;
+        // let container_Option = document.getElementById("Test");
+        container_Option.appendChild(optionContent2);
+
+        if(data1[i].Option3.localeCompare("")){
+           let optionContent3 = document.createElement("div");
+        optionContent3.innerHTML = "Option C: " + data1[i].Option3;
+        // let container_Option = document.getElementById("Test");
+        container_Option.appendChild(optionContent3); 
+        }
+        
+
+        if(data1[i].Option4.localeCompare("")){
+           let optionContent4 = document.createElement("div");
+        optionContent4.innerHTML = "Option D: " + data1[i].Option4;
+        // let container_Option = document.getElementById("Test");
+        container_Option.appendChild(optionContent4); 
+        }
+        
+
+
+        realAnswer.push(data1[i].Correct);
+        let answerField = document.createElement("input");
+        // let container_Option = document.getElementById("Test");
+        answerField.placeholder = "In capital letters ABCD";
+        container_Option.appendChild(answerField);
+        answerField.setAttribute("name", "inputClass");
+        let x = document.createElement("BR");
+        let y = document.createElement("BR");
+        container_Option.appendChild(x);
+        container_Option.appendChild(y);
+
+      }
+
+    }
+  </script>
+
+  <h1>Here is a test for you, student!</h1>
+  <input placeholder="Input your name" id="Studentname">
+  <br><br>
+  <div id="Test" style="width: 70%"></div>
+
+  <script>
+    function submit() {
+      let elemQ = document.getElementsByName("inputClass");
+      // let answer = [];
+      let score = 0;
+      console.log(realAnswer);
+      for (let i = 0; i < elemQ.length; i++) {
+        if (elemQ[i].value == realAnswer[i]) {
+          score = score + 1;
+
+        }
+        // answer.push(elemQ[i].value);
+
+      }
+      alert("Your score is: " + score);
+
+      let nameGetter = document.getElementById("Studentname");
+      let a = nameGetter.value;
+      $(document).ready(function () {
+
+
+
+        $.ajax({ //create an ajax request
+          type: "POST",
+          url: "/individual/writeFromStudent",
+          dataType: "json", //expect html to be returned  
+          data: {
+            "score": score,
+            "name": a
+          },
+          success: function (data) {
+
+            console.log(data);
+            console.log("wtfffff");
+            window.location.reload();
+
+          },
+          error: function (request, status, error) {
+            // alert(request.responseText);
+            console.log(error);
+          }
+
+        });
+
+      });
+      window.location.reload();
+    }
+  </script>
+  <br>
+  <button onclick="submit()">Submit</button>
+  <button onclick="toHomepage()">Go Back to Index</button>
+
+
+  <script>
+    function toHomepage() {
+      window.location = "/individual";
+    }
+  </script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>

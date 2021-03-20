@@ -1,0 +1,101 @@
+<html>
+
+<head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <title>Student Page</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body {
+      background-color: aquamarine;
+    }
+
+    #Test {
+      display: block;
+      margin: 0 auto;
+    }
+
+    button {
+      display: inline-block;
+      padding: 0.3em 1em;
+      text-decoration: none;
+      color: #0e1c36;
+      border: solid 2px #0e1c36;
+      border-radius: 3px;
+      transition: .4s;
+      background: white;
+    }
+
+    button:hover {
+      background: #0e1c36;
+      color: white;
+    }
+  </style>
+
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+</head>
+
+<body style="text-align: center;">
+  <script type="text/javascript">
+    $(document).ready(function () {
+
+
+
+      $.ajax({ //create an ajax request
+        type: "GET",
+        url: "/individual/readscoreboard",
+        dataType: "json", //expect html to be returned                
+        success: function (data) {
+
+          console.log(data);
+          myFunction(data);
+        },
+        error: function (request, status, error) {
+          alert(request.responseText);
+          console.log(error);
+        }
+
+      });
+
+    });
+
+    function myFunction(data1) {
+      for (let i = 0; i < 10; i++) {
+        let questionID = document.createElement("div");
+        questionID.innerHTML = "Student Name: " + data1[i]["Username"];
+        let container = document.getElementById("Test");
+        container.appendChild(questionID);
+
+
+        let questionContent = document.createElement("div");
+        questionContent.innerHTML = "Score: " + data1[i]["Score"];
+
+        container.appendChild(questionContent);
+
+        let x = document.createElement("BR");
+        container.appendChild(x);
+      }
+
+    }
+  </script>
+
+  <h1>Leaderboard of Top 10 Students</h1>
+
+  <br><br>
+  <div id="Test" style="width: 70%"></div>
+
+
+  <br>
+  <script>
+    function toHomepage() {
+      window.location = "/individual";
+    }
+  </script>
+  <button onclick="toHomepage()">Go Back to Index</button>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+</body>
+
+</html>
